@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Register</title>
+    <style>
+      body {
+        background-color: #141414;
+        color: white;
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        text-align: center;
+        margin-top: 50px;
+      }
+      h1 {
+        color: #e50914;
+      }
+      form {
+        display: inline-block;
+        text-align: left;
+      }
+      input[type="text"], input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: none;
+      }
+      button {
+        background-color: #e50914;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #b20710;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Register User</h1>
+      <!-- Rimozione degli attributi action e method -->
+      <form id="registerForm">
+        <label for="email">Email:</label><br>
+        <input type="text" id="email" name="email"><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password"><br><br>
+        <!-- Sostituzione dell'input submit con un bottone che chiama la funzione JavaScript -->
+        <button type="button" onclick="registerUser()">Register</button>
+      </form>
+    </div>
+
+    <script>
+      // Funzione JavaScript per inviare i dati del form in formato JSON al servizio di autenticazione
+      function registerUser() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        // Controllo se i campi sono compilati
+        if (!email || !password) {
+          alert('Please fill in both email and password fields.');
+          return;
+        }
+
+        fetch('http://localhost:5000/auth/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: email, password: password }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.access_token) {
+            // Salva il token JWT per utilizzi futuri, ad esempio nel localStorage
+            localStorage.setItem('access_token', data.access_token);
+            // Reindirizza alla home dopo la registrazione
+            window.location.href = '/home?token=' + data.access_token;
+          } else {
+            alert(data.error || "Registration failed");
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert("An error occurred. Please try again.");
+        });
+      }
+    </script>
+  </body>
+</html>

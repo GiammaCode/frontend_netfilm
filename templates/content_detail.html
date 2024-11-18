@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Content Detail</title>
+    <style>
+      body {
+        background-color: #141414;
+        color: white;
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        text-align: center;
+        margin-top: 50px;
+      }
+      h1 {
+        color: #e50914;
+      }
+      img {
+        width: 200px;
+        height: 300px;
+      }
+      .actions a {
+        display: inline-block;
+        margin: 10px;
+        padding: 10px;
+        background-color: #e50914;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+      }
+      .actions a:hover {
+        background-color: #b20710;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>{{ content['title'] }}</h1>
+      <img src="{{ content['image_url'] }}" alt="{{ content['title'] }}">
+      <p>{{ content['description'] }}</p>
+      <div class="actions">
+        <a href="/content/{{ content['id'] }}/stream">Stream</a>
+        <form action="/content/{{ content['id'] }}/download" method="post" style="display: inline;">
+          <button type="submit">Download</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

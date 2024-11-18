@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Profile Management</title>
+    <style>
+      body {
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        width: 50%;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+      form {
+        margin-bottom: 20px;
+      }
+      input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+      input[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      input[type="submit"]:hover {
+        background-color: #0056b3;
+      }
+      .profiles {
+        margin-top: 20px;
+      }
+      .profile {
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Profile Management</h1>
+      <form action="/profiles-ui" method="post">
+        <label for="id">Profile ID:</label>
+        <input type="text" id="id" name="id" required><br>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+        <input type="submit" value="Create Profile">
+      </form>
+      {% if message %}
+        <p><strong>{{ message }}</strong></p>
+      {% endif %}
+      <div class="profiles">
+        <h2>Existing Profiles</h2>
+        {% for profile_id, profile in profiles.items() %}
+          <div class="profile">
+            <p><strong>ID:</strong> {{ profile_id }}</p>
+            <p><strong>Name:</strong> {{ profile.name }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>All Content</title>
+    <style>
+      body {
+        background-color: #141414;
+        color: white;
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        text-align: center;
+        margin-top: 50px;
+      }
+      h1 {
+        color: #e50914;
+      }
+      .movies {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .movie {
+        margin: 15px;
+      }
+      img {
+        width: 200px;
+        height: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>All Content Available</h1>
+      <div class="movies">
+        {% for content in contents %}
+          <div class="movie">
+            <img src="{{ content['image_url'] }}" alt="{{ content['title'] }}">
+            <h3>{{ content['title'] }}</h3>
+            <a href="/content/{{ content['id'] }}">Info</a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </body>
+</html>
