@@ -42,9 +42,8 @@
       <img src="{{ content['image_url'] }}" alt="{{ content['title'] }}">
       <p>{{ content['description'] }}</p>
       <div class="actions">
-        <a href="/content/{{ content['id'] }}/stream">Stream</a>
-        <form action="/content/{{ content['id'] }}/download" method="post" style="display: inline;">
-          <button type="submit">Download</button>
+        <a href="/content/{{ content['id'] }}/stream?token={{ token }}">Stream</a>
+        <a href="/content/{{ content['id'] }}/download?token={{ token }}">Download</a>
         </form>
       </div>
     </div>

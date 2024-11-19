@@ -3,6 +3,7 @@ from flask_cors import CORS
 import requests
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'
 
 # URL dei microservizi
 AUTHENTICATION_SERVICE_URL = "http://localhost:5000"
@@ -117,34 +118,47 @@ def content_detail(content_id):
         return render_template('content_detail.html', content=content, token=token)
     else:
         return "Content not found", response.status_code
+        
 
-# Pagina per lo streaming del contenuto
-@app.route('/content/<int:content_id>/stream', methods=['GET'])
-def stream_content(content_id):
+# Pagina per visualizzare dettagli di un contenuto specifico
+@app.route('/content', methods=['GET'])
+def content():
     token = request.args.get('token')
     headers = {'Authorization': f'Bearer {token}'}
-    
-    # Chiamata al servizio di gestione per lo streaming del contenuto
-    response = requests.get(f"{CONTENT_MANAGEMENT_SERVICE_URL}/content/{content_id}/stream", headers=headers)
+    # Chiamata al servizio di gestione dei contenuti per ottenere i dettagli
+    response = requests.get(f"{CONTENT_MANAGEMENT_SERVICE_URL}/content", headers=headers)
     if response.status_code == 200:
         content = response.json()
+        return render_template('all_content.html', content=content, token=token)
+    else:
+        return "Content not found", response.status_code
+
+@app.route('/content/<int:content_id>/stream', methods=['GET'])
+def stream_content(content_id):
+    # Effettua una richiesta al servizio di gestione dei contenuti
+    response = requests.get(f"{CONTENT_MANAGEMENT_SERVICE_URL}/content/{content_id}/stream")
+    
+    if response.status_code == 200:
+        # Se la risposta ha successo, ottieni i dettagli del contenuto per visualizzare la pagina di streaming
+        content = response.json().get('content')
         return render_template('stream.html', content=content)
     else:
+        # In caso di errore, restituisce il messaggio di errore e il codice di stato appropriato
         return "Unable to stream content", response.status_code
 
 # Pagina per il download del contenuto
-@app.route('/content/<int:content_id>/download', methods=['POST'])
+@app.route('/content/<int:content_id>/download', methods=['GET'])
 def download_content(content_id):
-    token = request.args.get('token')
-    headers = {'Authorization': f'Bearer {token}'}
+     # Effettua una richiesta al servizio di gestione dei contenuti
+    response = requests.get(f"{CONTENT_MANAGEMENT_SERVICE_URL}/content/{content_id}/stream")
     
-    # Chiamata al servizio di gestione per il download del contenuto
-    response = requests.post(f"{CONTENT_MANAGEMENT_SERVICE_URL}/content/{content_id}/download", headers=headers)
     if response.status_code == 200:
-        content = response.json()
+        # Se la risposta ha successo, ottieni i dettagli del contenuto per visualizzare la pagina di streaming
+        content = response.json().get('content')
         return render_template('download.html', content=content)
     else:
-        return "Unable to download content", response.status_code
+        # In caso di errore, restituisce il messaggio di errore e il codice di stato appropriato
+        return "Unable to stream content", response.status_code
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000, debug=True)
