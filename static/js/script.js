@@ -12,9 +12,8 @@ function register() {
     .then(response => response.json())
     .then(data => {
         if (data.access_token) {
-            // Salva il token per l'utilizzo successivo
+            //Save the token to next use
             localStorage.setItem('access_token', data.access_token);
-            // Reindirizza alla home
             window.location.href = '/home';
         } else {
             alert(data.error || "Registration failed");
