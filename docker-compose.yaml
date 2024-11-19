@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  authentication_service:
+    image: gianmariacasamenti1/authentication_service:latest
+    ports:
+      - "5000:5000" 
+    environment:
+      - JWT_SECRET_KEY=your_jwt_secret_key  
+
+  content_service:
+    image: gianmariacasamenti1/content_managment_service:latest  
+    ports:
+      - "5001:5001"  
+    environment:
+      - FLASK_ENV=development  
