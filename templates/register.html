@@ -44,24 +44,21 @@
   <body>
     <div class="container">
       <h1>Register User</h1>
-      <!-- Rimozione degli attributi action e method -->
       <form id="registerForm">
         <label for="email">Email:</label><br>
         <input type="text" id="email" name="email"><br>
         <label for="password">Password:</label><br>
         <input type="password" id="password" name="password"><br><br>
-        <!-- Sostituzione dell'input submit con un bottone che chiama la funzione JavaScript -->
         <button type="button" onclick="registerUser()">Register</button>
       </form>
     </div>
 
     <script>
-      // Funzione JavaScript per inviare i dati del form in formato JSON al servizio di autenticazione
+      // Function JavaScript to send data in the form (JSON format)
       function registerUser() {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
 
-        // Controllo se i campi sono compilati
         if (!email || !password) {
           alert('Please fill in both email and password fields.');
           return;
@@ -77,9 +74,8 @@
         .then(response => response.json())
         .then(data => {
           if (data.access_token) {
-            // Salva il token JWT per utilizzi futuri, ad esempio nel localStorage
+            //to save token in the local storage
             localStorage.setItem('access_token', data.access_token);
-            // Reindirizza alla home dopo la registrazione
             window.location.href = '/home?token=' + data.access_token;
           } else {
             alert(data.error || "Registration failed");
