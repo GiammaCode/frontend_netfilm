@@ -14,29 +14,33 @@
         text-align: center;
         margin-top: 50px;
       }
-      h1 {
-        color: #e50914;
+      .header {
+        position: fixed;
+        top: 0;
+        right: 0;
+        padding: 20px;
       }
-      .logout {
-        display: block;
-        margin: 20px;
-        padding: 10px;
+      .logout-button {
         background-color: #e50914;
         color: white;
-        text-decoration: none;
-        font-weight: bold;
+        padding: 10px 15px;
+        border: none;
         border-radius: 5px;
-        width: 100px;
-        margin-left: auto;
-        margin-right: auto;
+        cursor: pointer;
+        font-weight: bold;
+        text-decoration: none;
       }
-      .logout:hover {
+      .logout-button:hover {
         background-color: #b20710;
+      }
+      h1 {
+        color: #e50914;
       }
       .movies {
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
+        margin-top: 70px; /* Aggiunge spazio sotto la barra di logout */
       }
       .movie {
         margin: 15px;
@@ -45,17 +49,41 @@
         width: 200px;
         height: 300px;
       }
+      .view-all {
+        display: block;
+        margin: 20px;
+        padding: 10px;
+        background-color: #e50914;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        width: 200px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .view-all:hover {
+        background-color: #b20710;
+      }
     </style>
   </head>
   <body>
+    <div class="header">
+      <a href="/logout" class="logout-button">Logout</a>
+    </div>
+    
     <div class="container">
-      <h1>Choose you favorite film in NETFILM</h1>
-      <a href="/auth/logout" class="logout">Logout</a>
+      <h1>Welcome to NetFilm Content</h1>
       <div class="movies">
-        <div class="movie"><img src="https://via.placeholder.com/200x300" alt="Movie 1"></div>
-        <div class="movie"><img src="https://via.placeholder.com/200x300" alt="Movie 2"></div>
-        <div class="movie"><img src="https://via.placeholder.com/200x300" alt="Movie 3"></div>
+        {% for content in contents %}
+          <div class="movie">
+            <img src="{{ content['image_url'] }}" alt="{{ content['title'] }}">
+            <h3>{{ content['title'] }}</h3>
+            <a href="/content/{{ content['id'] }}">Info</a>
+          </div>
+        {% endfor %}
       </div>
+      <a href="/content" class="view-all">View All Content</a>
     </div>
   </body>
 </html>
